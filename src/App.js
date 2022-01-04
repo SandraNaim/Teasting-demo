@@ -8,7 +8,10 @@ function App() {
       <h1 data-test="counter-display">
         The counter display is: <span data-test="count">{count}</span> 
       </h1>
-      <button data-test="increment-button">Increment button</button>
+      <button 
+        data-test="increment-button"
+        onClick={() => setCount(count + 1)}
+      >Increment button</button>
     </div>
   );
 }
