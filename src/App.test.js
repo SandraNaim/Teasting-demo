@@ -49,3 +49,59 @@ test('clicking button increments counter', () => {
   expect(count).toBe("1");
 });
 
+test('renders decrement button', () => {
+  const wrapper = setup();
+  const button = findByTestAttr(wrapper,"decrement-button")
+  expect(button.length).toBe(1)
+});
+
+test('clicking button decrement counter', () => {
+  const wrapper = setup();
+
+  // find and click the inc button
+  const incButton = findByTestAttr(wrapper, "increment-button");
+  incButton.simulate('click');
+
+  // find and click the dec button
+  const decButton = findByTestAttr(wrapper, "decrement-button");
+  decButton.simulate('click');
+
+  // find the display and test the number has been incremented
+  const count = findByTestAttr(wrapper, "count").text();
+  expect(count).toBe("0");
+});
+
+describe("counter is 0 and decrement is clicked", () => {
+  // using a describe here so I can use a "beforeEach" for shared setup
+
+  // scoping wrapper to the describe, so it can be used in beforeEach and the tests
+  let wrapper;
+  beforeEach(() => {
+    // no need to set counter value here; default value of 0 is good
+    wrapper = setup();
+
+    // find button and click
+    const button = findByTestAttr(wrapper, "decrement-button");
+    button.simulate("click");
+  });
+  test("error shows", () => {
+    // check the class of the error message
+    const errorDiv = findByTestAttr(wrapper, "error-message");
+    const errorHasHiddenClass = errorDiv.hasClass("hidden");
+    expect(errorHasHiddenClass).toBe(false);
+  });
+  test("counter still displays 0", () => {
+    const count = findByTestAttr(wrapper, "count").text();
+    expect(count).toBe("0");
+  });
+  test("clicking increment clears the error", () => {
+    // find and click the increment button
+    const incButton = findByTestAttr(wrapper, "increment-button");
+    incButton.simulate("click");
+
+    // check the class of the error message
+    const errorDiv = findByTestAttr(wrapper, "error-message");
+    const errorHasHiddenClass = errorDiv.hasClass("hidden");
+    expect(errorHasHiddenClass).toBe(true);
+  });
+})
